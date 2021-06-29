@@ -1,0 +1,662 @@
+swagger: '2.0'
+info:
+  version: proof of concept
+  title: Symedical RESTful Services
+  description: "\n# Heading level 1\nThis is a paragraph of description text.  Sed a odio feugiat, tincidunt nibh nec, ultrices lacus. Vestibulum ligula orci, feugiat et mauris ac, porttitor luctus metus. Nam id varius nisi. Maecenas volutpat consequat nisi et placerat. Donec gravida iaculis dignissim. Sed a rhoncus ante. Morbi porta consequat risus, quis vestibulum ante suscipit pellentesque. Nunc non lorem ut diam ultrices tincidunt eu blandit magna. \n## Heading level 2\nMorbi feugiat diam in metus porttitor, id tincidunt diam interdum. Maecenas bibendum accumsan vestibulum. Donec mattis placerat arcu sed sodales. Praesent fermentum `inline code text` sodales efficitur. Mauris mollis orci libero, sit amet interdum lorem luctus eget. Donec quis elit quis tortor congue tristique. \n### Heading level 3\nMaecenas vel nisi felis.\n#### Heading level 4\n##### Heading level 5\n###### Heading level 6\n**bold text** *italic text* ***bold & italic***\n> blockquote, ordered list, nested blockquote, unordered list\n> 1. Live-edge small batch tumeric food truck readymade bicycle rights artisan fashion axe humblebrag. \n> 2. Green juice unicorn YOLO, palo santo venmo authentic ennui scenester vaporware. \n>> - Gluten-free meh poke stumptown organic schlitz truffaut cliche actually. \n>>  - Meh actually raw denim subway tile, vegan 90's celiac keffiyeh photo booth. \n>> Tote bag kale chips pug austin paleo mlkshk kickstarter.\n\n\tcode block\n\tPOST /Todo\n\t{\n\t\t\"id\": 1,\n\t\t\"name\": \"Item1\",\n\t\t\"isComplete\": true\n\t}\nmore text\n```json\nsyntax highlighted code block\n{\n\t\"id\": 1,\n\t\"name\": \"Item1\",\n\t\"isComplete\": true\n}\n```\nImage\n\n![CA logo](https://clinicalarchitecture.com/wp-content/themes/clinicalarchitecturetheme/clinicalarchitecturelogo.svg)\n\nHorizontal rule\n\n---\n\nLinks: [Clinical Architecture](http://www.clinicalarchitecture.com/ 'tooltips, too')"
+  termsOfService: 'http://www.clinicalarchitecture.com/'
+  contact:
+    name: Jason Dirgo
+    email: jason_dirgo@clinicalarchitecture.com
+    url: 'http://www.clinicalarchitecture.com'
+  license:
+    name: License terms
+    url: 'http://www.clinicalarchitecture.com/'
+host: localhost
+basePath: /SymedicalTrainingRuntimeRestService
+schemes:
+  - http
+tags:
+  - name: Catalog
+    description: |-
+      A collection of methods for working with catalog data.
+
+      # Overview of Catalog Methods
+      This is a paragraph of description text.  Sed a odio feugiat, tincidunt nibh nec, ultrices lacus. Vestibulum ligula orci, feugiat et mauris ac, porttitor luctus metus. Nam id varius nisi. Maecenas volutpat consequat nisi et placerat. Donec gravida iaculis dignissim. Sed a rhoncus ante. Morbi porta consequat risus, quis vestibulum ante suscipit pellentesque. Nunc non lorem ut diam ultrices tincidunt eu blandit magna. Morbi feugiat diam in metus porttitor, id tincidunt diam interdum. Maecenas bibendum accumsan vestibulum. 
+      ## Heading level 2
+      Donec mattis placerat arcu sed sodales. Praesent fermentum `inline code text` sodales efficitur. Mauris mollis orci libero, sit amet interdum lorem luctus eget. Donec quis elit quis tortor congue tristique. Maecenas vel nisi felis.
+    externalDocs:
+      description: More information
+      url: 'http://symmunitycenter.com/'
+  - name: Term
+    description: A collection of methods for working with term data.
+    externalDocs:
+      description: More information
+      url: 'http://symmunitycenter.com/'
+  - name: Tutorials & Sample Code
+    description: |-
+      Code samples in various languages for implementing these methods for common use cases.
+      # Overview of sample code
+      ## Heading level 2
+    externalDocs:
+      description: 'More information:'
+      url: 'http://symmunitycenter.com/'
+paths:
+  /catalog:
+    get:
+      tags:
+        - Catalog
+      description: "<p>Returns a collection of all published catalogs, including their name, mnemonic, UID, date of last publication, date of last update, an array of attributes, and the number of terms. This is intended to support developers and is not likely to be used in an end-user facing application.  To see an example application featuring this method, see the <a href='#post-/tutorial/search-all-catalogs'>Catalog Search</a> tutorial.</p>\n\n**Sample Code** `C#`\n```csharp \nusing System;\nusing System.Net.Http;\nusing System.Threading.Tasks;\nusing Newtonsoft.Json;\n\n{\n\tpublic class Program\n\t{\n\t\tpublic static async Task<object> GetCatalogs()\n\t\t{\n\t\t\tUri service = new Uri(\"http://localhost/SymedicalTrainingRuntimeRestService/catalog\");\n\t\t\tHttpClient client = new HttpClient();\n\t\t\tHttpResponseMessage response = await client.GetAsync(service);\n\t\t\tstring message = await response.Content.ReadAsStringAsync();\n\t\t\tdynamic results = JsonConvert.DeserializeObject(message);\n\t\t\treturn results;\n\t\t}\n\t\tstatic async Task Main()\n\t\t{\n\t\t\tdynamic catalogs = await GetCatalogs();\n\t\t\t// example output\n\t\t\tint n;\n\t\t\tfor (n = 1; n < catalogs.Count; n++)\n\t\t\t{\n\t\t\t\tConsole.WriteLine(\n\t\t\t\t\t$\"#{n}: {catalogs[n].CatalogName} [{catalogs[n].Mnemonic}] (Last Published: {catalogs[n].LastPublishedDate})\"\n\t\t\t\t\t);\n\t\t\t}\n\t\t}\n\t}\n}\n```"
+      summary: Return all published catalogs
+      operationId: Catalog_GetAllCatalogItems
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - text/html
+        - application/xml
+        - text/xml
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SymedicalServer.Components.Runtime.CatalogItem'
+  /catalog/search:
+    post:
+      tags:
+        - Catalog
+      summary: Search within catalogs
+      description: "Returns a collection of term search items, each representing a term found using the provided search parameters.\r\nWith this method, specify whether to use the Symedical-standard or Symedical-weighted search engine and the engine-specific methods used to execute the search.  To see an example application featuring this method, see the <a href='#post-/tutorial/search-all-catalogs'>Catalog Search</a> tutorial."
+      operationId: Catalog_POSTSearchCatalogTerms
+      consumes:
+        - application/json
+        - text/json
+        - text/html
+        - application/xml
+        - text/xml
+        - application/x-www-form-urlencoded
+      produces:
+        - application/json
+        - text/json
+        - text/html
+        - application/xml
+        - text/xml
+      parameters:
+        - name: request
+          in: body
+          description: Properties to filter search results.
+          required: true
+          schema:
+            $ref: '#/definitions/SymedicalServer.Runtime.Restful.TermSearchRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/SymedicalServer.Components.Utility.TermSearchResult'
+  /term/list:
+    get:
+      tags:
+        - Term
+      summary: Return a list of terms by source code
+      description: Returns a collection of term search items for the catalog/source codes requested.
+      operationId: Term_GETTermByCode
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - text/html
+        - application/xml
+        - text/xml
+      parameters:
+        - name: catalogIdentifier
+          in: query
+          description: Unique identifier or mnemonic for the catalog from which to retrieve terms.
+          required: true
+          type: string
+        - name: codes
+          in: query
+          description: List of term source codes to retrieve
+          required: true
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+        - name: includeDomainChars
+          in: query
+          description: '"True" or "False" specifying whether published domain characteristics should be returned with the term.'
+          required: false
+          type: boolean
+        - name: includeAttributes
+          in: query
+          description: '"True" or "False" specifying whether published attributes should be returned with the term.'
+          required: false
+          type: boolean
+        - name: contentModel
+          in: query
+          description: The content model mnemonic or unique identifier.
+          required: false
+          type: string
+        - name: tenant
+          in: query
+          description: Mnemonic representing a specific tenant. Required when tenants are enabled on the server.
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SymedicalServer.Components.Utility.TermSearchItem'
+  /tutorial/search-all-catalogs:
+    post:
+      tags:
+        - Tutorials & Sample Code
+      summary: Search all published catalogs
+      description: "This sample code performs two methods in sequence.\n\nFirst, `GET /catalog` is called to create an array of all published catalog mnemonics.  This method is called from the `GetCatalogs()` task and stored in the dynamic `catalogs` object.  A while loop is run to take each catalog mnemonic from the resulting array and add it as a `catalog` list item.  Then, `POST /catalog/search` is called to submit a search query within that list of catalogs.  This method is called from the `SearchQuery()` task and the results are stored in the dynamic `results` object.  The `SearchQuery()` task takes in a few variables as input: \n* `catalog`, a list of catalog mnemonics,\n* `query`, the search query string,\n* `hits`, the number of results to return, and\n* `page`, the numbered page of results.\n\nThe `results` object schema matches the `POST /catalog/search` response schema.  Sample results are output to the console, but the object containing the results can be used in whatever way is appropriate to your needs.\n\n**Sample Code** `C#`\n```cs \nusing System;\nusing Newtonsoft.Json;\nusing System.Collections.Generic;\nusing System.Net.Http;\nusing System.Text;\nusing System.Threading.Tasks;\n\nnamespace Search_All_Catalogs\n{\n\tpublic class SearchEngine\n\t{\n\t\tpublic string SearchEngineMnemonic { get; set; }\n\t}\n\n\tpublic class PagingFilter\n\t{\n\t\tpublic int MaxPerPage { get; set; }\n\t\tpublic int PageIndex { get; set; }\n\t}\n\n\tpublic class SearchCatalog\n\t{\n\t\tpublic List<string> catalogs { get; set; }\n\t\tpublic string searchText { get; set; }\n\t\tpublic SearchEngine searchEngine { get; set; }\n\t\tpublic PagingFilter pagingFilter { get; set; }\n\t}\n\n\n\tpublic class SearchAllCatalogs\n\t{\n\t\t// request uri\n\t\t// http://localhost/SymedicalTrainingRuntimeRestService/catalog/search\n\t\t// |____server_____|_____________directory_____________|____method____|\n\t\tpublic const string server = \"http://localhost/\";\n\t\tpublic const string directory = \"SymedicalTrainingRuntimeRestService\";\n\n\t\tpublic static async Task<object> GetCatalogs()\n\t\t{\n\t\t\tstring method = \"/catalog\";\n\t\t\tUri service = new Uri(server + directory + method);\n\t\t\tHttpClient client = new HttpClient();\n\t\t\t\n\t\t\t// get query\n\t\t\tHttpResponseMessage response = await client.GetAsync(service);\n\t\t\t\n\t\t\t// read response\n\t\t\tstring message = await response.Content.ReadAsStringAsync();\n\t\t\tdynamic results = JsonConvert.DeserializeObject(message);\n\t\t\t\n\t\t\treturn results;\n\t\t}\n\n\t\tstatic async Task<object> SearchQuery(List<string> catalogs, string searchText, int hits, int page)\n\t\t{\n\t\t\tstring method = \"/catalog/search\";\n\t\t\tUri service = new Uri(server + directory + method);\n\t\t\tHttpClient client = new HttpClient();\n\n\t\t\t// assemble query\n\t\t\tobject query = new SearchCatalog()\n\t\t\t{\n\t\t\t\tcatalogs = catalogs,\n\t\t\t\tsearchText = searchText,\n\t\t\t\tsearchEngine = new SearchEngine { SearchEngineMnemonic = \"SYMEDICAL-WEIGHTED\" },\n\t\t\t\tpagingFilter = new PagingFilter\n\t\t\t\t{\n\t\t\t\t\tMaxPerPage = hits,\n\t\t\t\t\tPageIndex = page\n\t\t\t\t}\n\t\t\t};\n\n\t\t\t// post query\n\t\t\tstring message = JsonConvert.SerializeObject(query);\n\t\t\tvar messageContent = new StringContent(message, Encoding.UTF8, \"application/json\");\n\t\t\tvar responseContent = await client.PostAsync(service, messageContent);\n\n\t\t\t// read response\n\t\t\tstring response = responseContent.Content.ReadAsStringAsync().Result;\n\t\t\tdynamic results = JsonConvert.DeserializeObject(response);\n\n\t\t\treturn results;\n\t\t}\n\n\t\tstatic async Task Main()\n\t\t{\n\t\t\t// get all published catalogs\n\t\t\tdynamic catalogs = await GetCatalogs();\n\t\t\t\n\t\t\t// create a list of catalog mnemonics\n\t\t\tint n = 0;\n\t\t\tList<string> catalog = new List<string>();\n\t\t\twhile (n < catalogs.Count)\n\t\t\t{\n\t\t\t\tcatalog.Add($\"{catalogs[n].Mnemonic}\");\n\t\t\t\tn++;\n\t\t\t}\n\n\t\t\t// search in all published catalogs for query\n\t\t\tint hits = 0;   // how many results to display (0 for all)\n\t\t\tint page = 0;   // which page of results (0 for first)\n\t\t\t\n\t\t\t// what are we searching for?\n\t\t\tstring query = \"Dyspnea\";\n\n\t\t\tdynamic results = await SearchQuery(catalog, query, hits, page);\n\t\t\t\n\t\t\t// example output\n\t\t\tConsole.WriteLine($\"{results.TermSearchTotalCount} total results\");\n\t\t\tConsole.WriteLine($\"Top {hits} results:\");\n\n\t\t\tint i = 0;\n\t\t\tforeach (var result in results.SearchResults)\n\t\t\t{   // \"#1: Description (source code) [catalog mnemonic]\"\n\t\t\t\tConsole.WriteLine(\n\t\t\t\t\t$\"#{(i+1)}: {results.SearchResults[i].SearchHitDescription} ({results.SearchResults[i].SearchHitSourceCode}) [{results.SearchResults[i].CatalogMnemonic}]\"\n\t\t\t\t);\n\t\t\t\ti++;\n\t\t\t}\n\t\t}\n\t}\n}\n```"
+      responses:
+        200:
+          description: Returns an array of CatalogItem objects.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/SymedicalServer.Components.Runtime.CatalogItem'
+        201:
+          description: Returns a TermSearchResult object including an array of TermSearchItem objects.
+          schema:
+            $ref: '#/definitions/SymedicalServer.Components.Utility.TermSearchResult'
+definitions:
+  SymedicalServer.Runtime.Restful.TermSearchRequest:
+    description: Properties needed to search for terms
+    required:
+      - catalogs
+      - searchText
+      - searchEngine
+      - pagingFilter
+    type: object
+    properties:
+      catalogs:
+        description: A collection of catalog mnemonics in which to search
+        type: array
+        items:
+          type: string
+      searchText:
+        description: 'The explicit search text, typically entered by the user'
+        type: string
+      implicitSearchtext:
+        description: "A collection of strings that represent additional context that can be supplied by the application. \r\nThey are appended to the explicit search text (SearchText) prior to invoking the search engine. \r\nThis allows the application to imply context to the search without polluting the user input"
+        type: array
+        items:
+          type: string
+      searchEngine:
+        $ref: '#/definitions/SymedicalServer.Components.Runtime.SearchEngine'
+        description: "The SearchEngine object determines the search engine type (Standard or Weighted) \r\nand the engine-specific search attributes that the search service will use to retrieve and order results"
+      searchFilters:
+        $ref: '#/definitions/SymedicalServer.Components.Utility.SearchFilters'
+        description: 'The SearchFilters object, which allows the calling application to request that the service pre-filter the search results based on both generic and catalog specific filter attributes'
+      contentModel:
+        description: The mnemonic or unique identifier for the content model that contains the relationships to search
+        type: string
+      pagingFilter:
+        $ref: '#/definitions/SymedicalServer.Components.Runtime.PagingFilter'
+        description: 'The PagingFilter object, which allows paging and sorting on the search results'
+  SymedicalServer.Components.Runtime.CatalogItem:
+    type: object
+    properties:
+      CatalogUID:
+        format: uuid
+        type: string
+        description: Unique identifier
+        example: 00000000-0000-0000-0000-000000000000
+      CatalogName:
+        type: string
+        description: Catalog name
+      CatalogVersion:
+        type: string
+        description: Catalog version
+      Mnemonic:
+        type: string
+        description: Catalog mnemonic
+      LastPublishedDate:
+        format: date-time
+        type: string
+        description: Date of last catalog publish
+      LastUpdatedDate:
+        format: date-time
+        type: string
+        description: Date of last catalog update
+      AttributesXML:
+        type: array
+        description: An array of catalog attributes
+        items:
+          type: object
+      TermCount:
+        format: int32
+        type: integer
+        description: The number of catalog terms
+  SymedicalServer.Components.Utility.TermSearchResult:
+    type: object
+    properties:
+      SearchResults:
+        type: array
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.TermSearchItem'
+      TermSearchTotalCount:
+        format: int32
+        type: integer
+        description: The total number of terms returned in the search.
+  SymedicalServer.Components.Utility.TermSearchItem:
+    type: object
+    properties:
+      SearchHitDescription:
+        type: string
+        description: The term returned in a search.
+      SearchHitSourceCode:
+        type: string
+        description: The source code for the term returned by a search.
+      SearchHitIsAliasBased:
+        type: boolean
+        description: True of False specifying whether the term returned by the search is the term's alias description.
+      TermUID:
+        format: uuid
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+        description: GUID of the term.
+      TermCatalogUID:
+        format: uuid
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+        description: GUID of the term's catalog.
+      TermSourceCode:
+        type: string
+        description: Term source code.
+      TermDescription:
+        type: string
+        description: Term Text.
+      AliasUID:
+        format: uuid
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+        description: GUID for the alternate representation of a catalog term description.
+      AliasSourceCode:
+        type: string
+        description: Source code for the alternate representation of a catalog term description.
+      AliasDescription:
+        type: string
+        description: Term alias description.
+      AliasTypeMnemonic:
+        type: string
+        description: Unique identifier for the type assigned to an alternate representation of a catalog term description.
+      AliasTypeName:
+        type: string
+        description: The name of the alias type.
+      AliasGroupMnemonic:
+        type: string
+        description: Mnemonic representing a local alias group.
+      AliasLanguageISOCode:
+        type: string
+        description: Language ISO code representing the language of the alias.  See LanguageISOCode for values.
+      AliasLanguageName:
+        type: string
+        description: The name of the language assigned to the alias purpose.
+      IsPreferred:
+        type: boolean
+        description: True of False specifying whether the term has been given a preferred status by the vendor.
+      IsRetired:
+        type: boolean
+        description: True or False specifying whether the term has been retired.
+      IsLocalTerm:
+        type: boolean
+        description: 'True or False specifying whether the term is a locally added term.  If true, the terms were added through the terminology service.'
+      CatalogUID:
+        format: uuid
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+        description: GUID of the catalog searched.
+      CatalogMnemonic:
+        type: string
+        description: The catalog's unique textual identifier.
+      OriginalCatalogMnemonic:
+        type: string
+        description: 'The unique identifier for the source of a subset catalog, content model subset catalog, or synchronized catalog.'
+      CatalogDisplayName:
+        type: string
+        description: The name of the catalog searched.
+      AttributesXML:
+        type: array
+        description: |-
+          An XML string with attributes.
+
+          **Type**: XMLElement.
+
+          **Please note**: if the **PublishAttributeDisplayValues** environment configuration setting in Symedical is set to True, the code and value for **List** type and **Term** type attributes are both returned in the XML.  Otherwise, only the code value is returned.
+        items:
+          type: object
+      AliasAttributesXML:
+        type: array
+        description: |-
+          An XML string with alias attributes.
+
+          **Type**: XMLElement.
+
+          **Please Note**: if the **PublishAttributeDisplayValues** environment configuration setting in Symedical is set to True, the code and value for **List** type and **Term** type attributes are both returned in the XML.  Otherwise, only the code value is returned.
+        items:
+          type: object
+      ModelRelationsXML:
+        type: array
+        description: |-
+          An XML string with model relations.
+
+          **Type**: XmlElement
+        items:
+          type: object
+      ErrorMessage:
+        type: string
+        description: Error message text.
+      LocalAttributesXML:
+        type: array
+        description: |-
+          An XML string with local attributes.
+
+          **Type**: XMLElement.
+
+          **Please Note**: if the **PublishAttributeDisplayValues** environment configuration setting in Symedical is set to True, the code and value for **List** type and **Term** type attributes are both returned in the XML.  Otherwise, only the code value is returned.
+        items:
+          type: object
+      CreationDate:
+        format: date-time
+        type: string
+        description: Date the term was created.
+      CreationDateLocal:
+        format: date-time
+        type: string
+        description: Date the local term was created.
+      ModificationDate:
+        format: date-time
+        type: string
+        description: Date the term was modified.
+      ModificationDateLocal:
+        format: date-time
+        type: string
+        description: Date the local term was modified.
+      LastPublishDate:
+        format: date-time
+        type: string
+        description: The date in which the term was most recently published to Symedical Runtime services.
+      LastPublishDateLocal:
+        format: date-time
+        type: string
+        description: The date in which the local term was most recently published to Symedical runtime services.
+      IncidenceCount:
+        format: int64
+        type: integer
+        description: A count of the number of times each term is used within a user-defined set of data.
+      StartDate:
+        format: date-time
+        type: string
+        description: The date the term became effective.
+      EndDate:
+        format: date-time
+        type: string
+        description: The date the term became obsolete.
+      HasDigitalAttachment:
+        type: boolean
+        description: True or False specifying whether a term has digital attachments.
+      PreferredDescription:
+        type: string
+        description: Preferred description of a term.  This will always be populated with either the primary term description or the preferred alias description if a preferred alias exists.
+      PreferredAliasUID:
+        format: uuid
+        type: string
+        example: 00000000-0000-0000-0000-000000000000
+        description: GUID for a preferred term's alias.
+      PreferredAliasSourceCode:
+        type: string
+        description: Unique identifier for a preferred term's alias.
+      PreferredAliasDescription:
+        type: string
+        description: Description for a preferred term's alias.
+      PreferredAliasTypeName:
+        type: string
+        description: The name of the preferred alias type.
+      PreferredAliasTypeMnemonic:
+        type: string
+        description: Identifier for the preferred term's alias type.
+      PreferredAliasGroupMnemonic:
+        type: string
+        description: Identifier for the preferred term's alias group.
+      PreferredAliasLanguageISOCode:
+        type: string
+        description: Language ISO code for the preferred alias.  See LanguageISOCode for values.
+      PreferredAliasLanguageName:
+        type: string
+        description: The name of the preferred language assigned to the preferred alias purpose.
+      DomainCharacteristics:
+        $ref: '#/definitions/SymedicalServer.Components.Utility.TermDomainCharacteristics'
+      ProfileDetail:
+        $ref: '#/definitions/SymedicalServer.Components.Utility.TermProfileDetail'
+      ExternalCodes:
+        type: array
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.ExternalCode'
+  SymedicalServer.Components.Utility.TermDomainCharacteristics:
+    type: object
+    properties:
+      DomainName:
+        type: string
+        description: Name of the domain.
+      DomainCharacteristics:
+        type: array
+        description: 'The TermDomainCharaacteristicItem object, which represents a collection of individual domain characteristics.  This is ued for the domain characteristics 1 through 24.'
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.TermDomainCharacteristic'
+      Other:
+        type: string
+        description: Used to store domain data that does not fit into domain characteristics 1 through 24.
+  SymedicalServer.Components.Utility.TermProfileDetail:
+    type: object
+    properties:
+      ProfileMnemonicUsed:
+        type: boolean
+        description: True or False specifying whether a profile is used.  Defaults to True for term search calls.
+      Mnemonic:
+        type: string
+        description: Unique identifier for the search profile.
+      MnemonicSupplied:
+        type: boolean
+        description: True or False specifying whether a profile is passed in.
+      HitCount:
+        format: int64
+        type: integer
+        description: The number of times the search was selected by the profile.
+      Favorite:
+        type: boolean
+        description: True or False specifying whether the term is a favorite term for the profile.
+  SymedicalServer.Components.Utility.ExternalCode:
+    type: object
+    description: A collection of external concept identifiers for the term.
+    properties:
+      Name:
+        type: string
+        description: External code code system.
+      Code:
+        type: string
+        description: External code.
+  SymedicalServer.Components.Utility.TermDomainCharacteristic:
+    type: object
+    properties:
+      CharacteristicName:
+        type: string
+        description: Name of the domain characteristic.
+      CharacteristicMnemonic:
+        type: string
+        description: The abbreviated form of the characteristic name used as a simplified reference.
+      Value:
+        type: string
+      Position:
+        format: int32
+        type: integer
+        description: Position of the characteristic for the domain used by the Nymble and NymbleDescendant searches to identify the correct characteristics.
+  SymedicalServer.Components.Runtime.SearchEngine:
+    type: object
+    required:
+      - SearchEngineMnemonic
+    properties:
+      SearchEngineMnemonic:
+        type: string
+        description: |-
+          Identifies which search engine to use.
+
+           **SYMEDICAL-WEIGHTED**:
+          * Returns a full-text (extended words begins with) search for matches found at the beginning of a word within the normalized term description irrespective of word order.  Additionally, it ustilized Synonyms, Preponyms, and Acronyms during the matching process to enhance search results.
+
+          **SYMEDICAL-STANDARD**:
+          * Standard search that uses additional parameters to control search criteria.
+      SearchEngineAttributes:
+        type: array
+        description: 'Name:Value pairs that modify the selected search engine.'
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.SearchEngineAttributes'
+  SymedicalServer.Components.Utility.SearchEngineAttributes:
+    type: object
+    properties:
+      SearchMethod:
+        type: integer
+        description: |-
+          The method the standard search uses to return results.
+          * **1**: Word Begins With
+          * **2**: Word Contains
+          * **3**: Term Begins With
+          * **4**: Term Contains
+          * **5**: Source Code Equals
+          * **6**: Source Code Begins With
+          * **7**: Source Code Contains
+          * **12**: Word Equals
+      UsePhonetic:
+        type: boolean
+        description: Search phonetically if the initial search returns 0 results.
+      IgnoreStopWords:
+        type: boolean
+        description: 'When set to true, the search ignores stop words.  Applicable only when SearchMethod equals 1.'
+      ProfileMnemonic:
+        type: integer
+        description: The profile mnemonic performing the search.
+  SymedicalServer.Components.Utility.SearchFilters:
+    type: object
+    properties:
+      IgnoreAlias:
+        type: boolean
+        description: 'True or False specifying whether the calling application is allowed to include aliases when searching.  If a value is not provided, this parameter defaults to False.'
+      IncludeRetiredTerms:
+        type: boolean
+        description: 'True or False specifying whether terms flagged as retired by the content author or the management team are included in the search results.  If a value is not provided, this parameter defaults to False.'
+      UsePreferredTermsOnly:
+        type: boolean
+        description: 'True or False specifying whether to filter on preferred terms only.  If a value is not provided, this parameter defaults to False.'
+      FilterCatalogAttributes:
+        type: array
+        description: |-
+          NameValueItem object, which is a collection of name and value pair items that represent the catalog attributes used to filter the results and the values for those attributes that are required for a term to be included in the result.  If a given attribute has multiple values it would need to be included in the list once for each attribute/value pair criteria.
+
+          Syntax examples:
+          * Where attribute is an exact match: ATTR_NAME, ATTR_VALUE
+          * Where attribute is a partial match: ATTR_NAME, ATTR_VALUE*
+          * Where attribute does not equal a specific value: ATTR_NAME~, ATTR_Value*
+          * Where attribute does not equal a partial value: ATTR_NAME~, ATTR_VALUE*
+          * Where attribute does not exist: ATTR_NAME~,*
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.NameValueItem'
+      FilterRelationQualifiers:
+        type: array
+        description: 'NameValueItem object, which is a collection of name and value pair items that represent the relation qualifiers that the calling application would like to use to filter the related terms and the values for those qualifiers that are required for a term to be included in the result.  If a given qualifier has multiple values for an attribute it would need to be included in the list once for each qualifier/value pair criteria.'
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.NameValueItem'
+      LanguageISOCodes:
+        type: array
+        description: 'List of strings representing the language ISO codes for the languages that the calling application wants to include in the search.  If the catalog or catalogs being searched do not support the language requested, no results will be retruned.  If tno value is provided, all languages are included.  See LanguageISOCode for values.'
+        items:
+          type: string
+      EffectiveDate:
+        format: date-time
+        type: string
+        description: The date the term became effective.
+      AliasGroupMnemonics:
+        type: array
+        description: |-
+          A collection containing the mnemonics representing a local alias group.  The search service allows the calling application to search for local alias groups, by specifying one or many AliasGroupMnemonics.
+
+          **Please note**: Not applicable for the SearchRelatedCode method.
+        items:
+          type: string
+      TenantMnemonic:
+        type: string
+        description: Mnemonic representing a specific tenant.
+      IgnoreLocalization:
+        type: boolean
+        description: 'True or False specifying whether to ignore localized content.  If a value is not provided, this parameter defaults to False if tenants are enabled; it defaults to True if tenants are disabled.'
+      LocalTermFilter:
+        format: int32
+        description: |-
+          Filter applied to local terms.
+
+          * 0: Exclude local terms
+          * 1: Include local terms
+          * 2: Local terms only
+        enum:
+          - 0
+          - 1
+          - 2
+        type: integer
+      UniqueTermsOnly:
+        type: boolean
+        description: 'True or False specifying whether to return the first instance of a term hit per primary TermUID.  If a value is not provided, this parameter defaults to False.'
+      RelationFilters:
+        type: array
+        description: 'TargetRelationFilter object, which represents a collection of relationships to filter.  A relation filter consists of the relationship name and related catalog identifier.'
+        items:
+          $ref: '#/definitions/SymedicalServer.Components.Utility.TargetRelationFilter'
+  SymedicalServer.Components.Runtime.PagingFilter:
+    type: object
+    required:
+      - MaxPerPage
+      - PageIndex
+    properties:
+      SortDirection:
+        type: string
+        description: ASC or DESC
+      SortPropety:
+        type: string
+      MaxPerPage:
+        format: int32
+        type: integer
+        description: How many results per page
+      PageIndex:
+        format: int32
+        type: integer
+        description: Which page of results
+  SymedicalServer.Components.Utility.NameValueItem:
+    type: object
+    properties:
+      ItemName:
+        type: string
+      ItemValue:
+        type: string
+  SymedicalServer.Components.Utility.TargetRelationFilter:
+    type: object
+    properties:
+      RelationshipIdentifier:
+        type: string
+        description: Valid relationship unique identifier or mnemonic.
+      CatalogIdentifier:
+        type: string
+        description: Unique identifier or mnemonic for the catalog containing the term.
+      TermSourceCode:
+        type: string
+        description: Term source code.
+      CatalogIdentifer:
+        type: string
+        description: '*Depreciated, typo*'
+externalDocs:
+  description: Insert external documentation link here
+  url: 'http://swagger.io'
